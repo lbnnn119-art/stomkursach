@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMILE EXPERT — Услуги</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #fff;
+            border-bottom: 2px solid #000;
+        }
+
+        .logo-link img {
+            height: 45px;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: background-color 0.2s;
+        }
+
+        nav a.active {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .profile-btn img {
+            width: 35px;
+            height: 35px;
+        }
+
+        main {
+            flex: 1;
+            position: relative;
+            padding: 50px 20px 80px 20px;
+            display: flex;
+            justify-content: center;
+            background-image: url('Rectangle 6.jpg');
+            background-repeat: no-repeat;
+            background-position: center 20px;
+            background-size: 700px auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 60px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .service-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .service-icon {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .service-list {
+            list-style: none;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            min-height: 110px;
+        }
+
+        .service-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            max-width: 280px;
+            min-height: 110px;
+        }
+
+        .more-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 45px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .more-btn:hover {
+            opacity: 0.85;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo img {
+            height: 45px;
+            filter: invert(1);
+        }
+
+        .footer-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 60px;
+        }
+
+        .footer-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-contacts {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(2px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            background: #f8f8f8;
+            border: 1px solid #777;
+            font-size: 15px;
+            outline: none;
+            color: #555;
+        }
+
+        .booking-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 50px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .booking-btn:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </a>
+        <nav>
+            <a href="services.html" class="active">Услуги</a>
+            <a href="team.html">Наша команда</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="reviews.html">Отзывы</a>
+        </nav>
+        <button class="profile-btn" onclick="window.location.href='index.html'">
+            <img src="Profile.png" alt="Профиль">
+        </button>
+    </header>
+
+    <main>
+        <div class="services-grid">
+
+            <div class="service-card">
+                <h2>Лечение зубов</h2>
+                <img src="леч.png" alt="Лечение зубов" class="service-icon">
+                <ul class="service-list">
+                    <li>Диагностика</li>
+                    <li>Лечение кариеса</li>
+                    <li>Лечение пульпита и периодонтита</li>
+                    <li>Удаление зубов</li>
+                </ul>
+                <button class="more-btn" onclick="openAppointmentModal('Лечение зубов')">Подробнее</button>
+            </div>
+
+            <div class="service-card">
+                <h2>Протезирование зубов</h2>
+                <img src="протез.png" alt="Протезирование" class="service-icon">
+                <ul class="service-list">
+                    <li>Металлокерамика</li>
+                    <li>Циркониевые коронки</li>
+                    <li>Съёмное и условно-съёмное протезирование</li>
+                </ul>
+                <button class="more-btn" onclick="openAppointmentModal('Протезирование зубов')">Подробнее</button>
+            </div>
+
+            <div class="service-card">
+                <h2>Исправление прикуса</h2>
+                <img src="прикус.png" alt="Исправление прикуса" class="service-icon">
+                <ul class="service-list">
+                    <li>Брекет-системы</li>
+                    <li>Капы и ретейнеры</li>
+                </ul>
+                <button class="more-btn" onclick="openAppointmentModal('Исправление прикуса')">Подробнее</button>
+            </div>
+
+            <div class="service-card">
+                <h2>Имплантация</h2>
+                <img src="импл.png" alt="Имплантация" class="service-icon">
+                <ul class="service-list">
+                    <li>Классическая имплантация</li>
+                    <li>Базальная имплантация</li>
+                    <li>Синус-лифтинг</li>
+                </ul>
+                <button class="more-btn" onclick="openAppointmentModal('Имплантация')">Подробнее</button>
+            </div>
+
+            <!-- 5. Гигиена и профилактика -->
+            <div class="service-card">
+                <h2>Гигиена и профилактика</h2>
+                <img src="гиг.png" alt="Гигиена" class="service-icon">
+                <p class="service-desc">
+                    Проходите профессиональную гигиену всего 2 раза в год! Очищающие и укрепляющие процедуры защитят Ваши зубы от кариеса.
+                </p>
+                <button class="more-btn" onclick="openAppointmentModal('Гигиена и профилактика')">Подробнее</button>
+            </div>
+
+            <div class="service-card">
+                <h2>Лечение дёсен</h2>
+                <img src="дёснаэ.png" alt="Лечение дёсен" class="service-icon">
+                <p class="service-desc">
+                    После лечебных процедур десны перестанут болеть и кровоточить, обретут прежний красивый и здоровый вид, а Вы будете чувствовать себя комфортно.
+                </p>
+                <button class="more-btn" onclick="openAppointmentModal('Лечение дёсен')">Подробнее</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </div>
+        <div class="footer-nav">
+            <a href="services.html">Услуги</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="team.html">Наша команда</a>
+            <a href="reviews.html">Отзывы</a>
+        </div>
+        <div class="footer-contacts">
+            <span>8 900-900-90-90</span>
+            <span>smileExpert@gmail.com</span>
+        </div>
+    </footer>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAppointmentModal()">&times;</span>
+            <h2 id="modalCategoryTitle" class="modal-title">Лечение зубов</h2>
+            
+            <form onsubmit="handleBooking(event)">
+                <select id="serviceSelect" class="form-select" required>
+                    <option value="" disabled selected>Выбор услуги</option>
+                    <option value="Консультация врача">Консультация врача</option>
+                    <option value="Лечение кариеса">Лечение кариеса</option>
+                    <option value="Чистка и профилактика">Профессиональная чистка</option>
+                    <option value="Удаление зуба">Удаление зуба</option>
+                    <option value="Установка брекетов">Установка брекетов</option>
+                </select>
+
+                <input type="datetime-local" id="dateInput" class="form-input" required>
+
+                <button type="submit" class="booking-btn">Записаться</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openAppointmentModal(categoryName) {
+            document.getElementById('modalCategoryTitle').innerText = categoryName;
+            document.getElementById('appointmentModal').style.display = 'flex';
+        }
+
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        }
+
+        async function handleBooking(e) {
+            e.preventDefault();
+            const service = document.getElementById('serviceSelect').value;
+            const date = document.getElementById('dateInput').value;
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert('Для записи на прием необходимо войти в систему на главной странице!');
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/api/appointment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        Услуга: service,
+                        Дата_время: date
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Вы успешно записаны на прием!');
+                    closeAppointmentModal();
+                } else {
+                    alert(data.error || 'Ошибка при записи');
+                }
+            } catch (err) {
+                alert('Не удалось связаться с сервером');
+            }
+        }
+    </script>
+</body>
+</html>
