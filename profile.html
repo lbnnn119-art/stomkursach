@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMILE EXPERT — Личный кабинет</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #fff;
+            border-bottom: 2px solid #000;
+        }
+
+        .logo-link img {
+            height: 45px;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: background-color 0.2s;
+        }
+
+        nav a:hover {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .profile-btn img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 220px;
+            border-right: 2px solid #000;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #f4f4f4;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .sidebar a.logout {
+            color: #d9534f;
+            margin-top: 10px;
+        }
+
+        main {
+            flex: 1;
+            padding: 30px 20px 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url('r.png');
+            background-repeat: no-repeat;
+            background-position: center 20px;
+            background-size: 700px auto;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .profile-box {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #777;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 650px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #f8f8f8;
+            border: 1px solid #777;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .save-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 40px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 25px auto 0 auto;
+        }
+
+        .bonus-info {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 650px;
+            text-align: left;
+        }
+
+        .delete-box {
+            background: rgba(245, 235, 235, 0.85);
+            border: 1px solid #777;
+            padding: 25px;
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+        }
+
+        .delete-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .delete-btn {
+            background: #ff7b7b;
+            color: #000;
+            border: none;
+            padding: 10px 45px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo img {
+            height: 45px;
+            filter: invert(1);
+        }
+
+        .footer-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 60px;
+        }
+
+        .footer-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-contacts {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </a>
+        <nav>
+            <a href="services.html">Услуги</a>
+            <a href="team.html">Наша команда</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="reviews.html">Отзывы</a>
+        </nav>
+        <button class="profile-btn" onclick="window.location.href='profile.html'">
+            <img src="Profile.png" alt="Профиль">
+        </button>
+    </header>
+
+    <div class="page-wrapper">
+        <aside class="sidebar">
+            <a href="profile.html"><strong>Редактирование профиля</strong></a>
+            <a href="#" class="logout" onclick="logout()">Выйти</a>
+        </aside>
+
+        <main>
+            <h1 class="page-title">Личный кабинет</h1>
+
+            <div class="profile-box">
+                <form onsubmit="saveProfile(event)">
+                    <div class="form-group">
+                        <label>Имя и фамилия</label>
+                        <input type="text" id="nameInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="text" id="phoneInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="emailInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="passwordInput" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="save-btn">Сохранить</button>
+                </form>
+            </div>
+
+            <div class="bonus-info">
+                Доступно бонусов: <span id="bonusCount">0</span>
+            </div>
+
+            <div class="delete-box">
+                <h3>УДАЛЕНИЕ ПРОФИЛЯ</h3>
+                <button class="delete-btn" onclick="deleteAccount()">Удалить</button>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </div>
+        <div class="footer-nav">
+            <a href="services.html">Услуги</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="team.html">Наша команда</a>
+            <a href="reviews.html">Отзывы</a>
+        </div>
+        <div class="footer-contacts">
+            <span>8 900-900-90-90</span>
+            <span>smileExpert@gmail.com</span>
+        </div>
+    </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Доступ запрещен! Пожалуйста, войдите в систему.');
+            window.location.href = 'index.html';
+        }
+
+        async function loadProfileData() {
+            try {
+                const res = await fetch('http://localhost:3000/api/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('nameInput').value = (data.Имя || '') + (data.Фамилия ? ' ' + data.Фамилия : '');
+                    document.getElementById('phoneInput').value = data.Телефон || '';
+                    document.getElementById('emailInput').value = data.Логин || '';
+                    document.getElementById('bonusCount').innerText = data.bonuses || 0;
+                }
+            } catch (err) {
+                console.error('Ошибка загрузки профиля', err);
+            }
+        }
+
+        loadProfileData();
+
+        function handleProfileClick() {
+            window.location.href = 'profile.html';
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            alert('Изменения сохранены!');
+        }
+
+        function logout() {
+            localStorage.clear();
+            alert('Вы вышли из аккаунта.');
+            window.location.href = 'index.html';
+        }
+
+        async function deleteAccount() {
+            if (confirm('Вы уверены, что хотите удалить профиль? Это действие необратимо.')) {
+                try {
+                    const res = await fetch('http://localhost:3000/api/profile/delete', {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        localStorage.clear();
+                        alert('Профиль успешно удален из базы данных.');
+                        window.location.href = 'index.html';
+                    } else {
+                        const data = await res.json();
+                        alert(data.error || 'Ошибка при удалении профиля');
+                    }
+                } catch (err) {
+                    alert('Не удалось связаться с сервером');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

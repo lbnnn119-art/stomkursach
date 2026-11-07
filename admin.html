@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMILE EXPERT — Панель модератора</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 30px;
+            border: 1px solid #ccc;
+        }
+        .admin-section {
+            margin-bottom: 40px;
+        }
+        .admin-section h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .action-btn {
+            background: #ff7b7b;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </a>
+        <nav>
+            <a href="services.html">Услуги</a>
+            <a href="team.html">Наша команда</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="reviews.html">Отзывы</a>
+        </nav>
+        <button class="profile-btn" onclick="window.location.href='profile.html'">
+            <img src="Profile.png" alt="Профиль">
+        </button>
+    </header>
+
+    <main>
+        <h1 class="page-title">Панель управления (Модератор)</h1>
+
+        <div class="admin-container">
+            <div class="admin-section">
+                <h2>Управление пользователями (Блокировка)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Логин</th>
+                            <th>Телефон</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable"></tbody>
+                </table>
+            </div>
+
+            <div class="admin-section">
+                <h2>Управление записями (Отмена)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Записи</th>
+                            <th>ID Пользователя</th>
+                            <th>Услуга</th>
+                            <th>Дата и время</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTable"></tbody>
+                </table>
+            </div>
+
+            <div class="admin-section">
+                <h2>Управление отзывами (Модерация)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Отзыва</th>
+                            <th>ID Пользователя</th>
+                            <th>Рейтинг</th>
+                            <th>Текст отзыва</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </div>
+        <div class="footer-nav">
+            <a href="services.html">Услуги</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="team.html">Наша команда</a>
+            <a href="reviews.html">Отзывы</a>
+        </div>
+        <div class="footer-contacts">
+            <span>8 900-900-90-90</span>
+            <span>smileExpert@gmail.com</span>
+        </div>
+    </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+
+        if (!token || role !== 'Администратор') {
+            alert('Доступ разрешен только администраторам!');
+            window.location.href = 'index.html';
+        }
+
+        async function loadAdminData() {
+            try {
+                const headers = { 'Authorization': `Bearer ${token}` };
+
+                // Загрузка пользователей
+                const usersRes = await fetch('http://localhost:3000/api/admin/users', { headers });
+                const users = await usersRes.json();
+                const usersTable = document.getElementById('usersTable');
+                usersTable.innerHTML = users.map(u => `
+                    <tr>
+                        <td>${u.ID_users}</td>
+                        <td>${u.Имя} ${u.Фамилия || ''}</td>
+                        <td>${u.Логин}</td>
+                        <td>${u.Телефон || '-'}</td>
+                        <td><button class="action-btn" onclick="deleteUser(${u.ID_users})">Блокировать</button></td>
+                    </tr>
+                `).join('');
+
+                // Загрузка записей
+                const appRes = await fetch('http://localhost:3000/api/admin/appointments', { headers });
+                const apps = await appRes.json();
+                const appTable = document.getElementById('appointmentsTable');
+                appTable.innerHTML = apps.map(a => `
+                    <tr>
+                        <td>${a.ID_записи}</td>
+                        <td>${a.ID_users}</td>
+                        <td>${a.Услуга}</td>
+                        <td>${new Date(a.Дата_время).toLocaleString()}</td>
+                        <td><button class="action-btn" onclick="deleteAppointment(${a.ID_записи})">Отменить</button></td>
+                    </tr>
+                `).join('');
+
+                // Загрузка отзывов
+                const revRes = await fetch('http://localhost:3000/api/admin/reviews', { headers });
+                const reviews = await revRes.json();
+                const reviewsTable = document.getElementById('reviewsTable');
+                reviewsTable.innerHTML = reviews.map(r => `
+                    <tr>
+                        <td>${r.ID_reviews}</td>
+                        <td>${r.ID_user}</td>
+                        <td>${r.Рейтинг} ★</td>
+                        <td>${r.Текст}</td>
+                        <td><button class="action-btn" onclick="deleteReview(${r.ID_reviews})">Удалить</button></td>
+                    </tr>
+                `).join('');
+
+            } catch (err) {
+                console.error('Ошибка загрузки данных админ-панели', err);
+            }
+        }
+
+        async function deleteUser(id) {
+            if (confirm('Вы уверены, что хотите заблокировать (удалить) пользователя?')) {
+                const res = await fetch(`http://localhost:3000/api/admin/user/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    alert('Пользователь заблокирован');
+                    loadAdminData();
+                }
+            }
+        }
+
+        async function deleteAppointment(id) {
+            if (confirm('Вы уверены, что хотите отменить эту запись?')) {
+                const res = await fetch(`http://localhost:3000/api/admin/appointment/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    alert('Запись отменена');
+                    loadAdminData();
+                }
+            }
+        }
+
+        async function deleteReview(id) {
+            if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
+                const res = await fetch(`http://localhost:3000/api/admin/review/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    alert('Отзыв удален');
+                    loadAdminData();
+                } else {
+                    alert('Ошибка при удалении отзыва');
+                }
+            }
+        }
+
+        loadAdminData();
+    </script>
+</body>
+</html>

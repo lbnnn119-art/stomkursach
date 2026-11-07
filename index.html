@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMILE EXPERT — Главная</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </a>
+        <nav>
+            <a href="services.html">Услуги</a>
+            <a href="team.html">Наша команда</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="reviews.html">Отзывы</a>
+        </nav>
+        <button class="profile-btn" onclick="handleProfileClick()">
+            <img src="Profile.png" alt="Профиль">
+        </button>
+    </header>
+
+    <main>
+        <h1 class="hero-title">SMILE EXPERT</h1>
+
+        <div class="intro-block">
+            <img src="рука.png" alt="Инструменты" class="intro-img">
+            <p class="intro-text">
+                «Красивая улыбка — лучшее украшение, которое всегда с вами. В стоматологии SMILE EXPERT мы создаем эту красоту с ювелирной точностью и душой. Забудьте о страхах и боли — наша команда превращает визит к стоматологу в приятную заботу о себе. Дарите миру свою улыбку, а остальное доверьте экспертам».
+            </p>
+        </div>
+
+        <section class="works-section">
+            <h2 class="works-title">Работы наших врачей</h2>
+            <div class="cards-grid">
+                <div class="work-card">
+                    <img src="Стоматология как искусство — результат лечения на брекет-системе.jpg" alt="До и После 1">
+                </div>
+                <div class="work-card">
+                    <img src="гл2.png" alt="До и После 2">
+                </div>
+                <div class="work-card">
+                    <img src="гл3.png" alt="До и После 3">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </div>
+        <div class="footer-nav">
+            <a href="services.html">Услуги</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="team.html">Наша команда</a>
+            <a href="reviews.html">Отзывы</a>
+        </div>
+        <div class="footer-contacts">
+            <span>8 900-900-90-90</span>
+            <span>smileExpert@gmail.com</span>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 15px; text-align: center;">Вход</h2>
+            
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label>Логин</label>
+                    <input type="text" id="loginInput" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="passwordInput" required>
+                </div>
+                
+                <div id="regFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" id="nameInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Фамилия</label>
+                        <input type="text" id="surnameInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="text" id="phoneInput">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Войти</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                <a href="#" id="toggleAuthMode" onclick="toggleAuthMode(event)" style="color: #000;">Нет аккаунта? Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let isRegister = false;
+
+        function handleProfileClick() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'profile.html';
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function toggleAuthMode(e) {
+            e.preventDefault();
+            isRegister = !isRegister;
+            document.getElementById('modalTitle').innerText = isRegister ? 'Регистрация' : 'Вход';
+            document.getElementById('submitBtn').innerText = isRegister ? 'Зарегистрироваться' : 'Войти';
+            document.getElementById('regFields').style.display = isRegister ? 'block' : 'none';
+            document.getElementById('toggleAuthMode').innerText = isRegister ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться';
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const login = document.getElementById('loginInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const endpoint = isRegister ? 'http://localhost:3000/api/register' : 'http://localhost:3000/api/login';
+            
+            const payload = isRegister ? {
+                Имя: document.getElementById('nameInput').value,
+                Фамилия: document.getElementById('surnameInput').value,
+                Логин: login,
+                Пароль: password,
+                Телефон: document.getElementById('phoneInput').value
+            } : {
+                Логин: login,
+                Пароль: password
+            };
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (!isRegister) {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('role', data.role);
+                        localStorage.setItem('userName', data.name);
+                        alert(`Добро пожаловать, ${data.name}!`);
+                        closeAuthModal();
+                        window.location.href = 'profile.html';
+                    } else {
+                        alert('Регистрация успешна! Теперь войдите в аккаунт.');
+                        toggleAuthMode(e);
+                    }
+                } else {
+                    alert(data.error || 'Произошла ошибка');
+                }
+            } catch (err) {
+                alert('Не удалось связаться с сервером');
+            }
+        }
+    </script>
+</body>
+</html>

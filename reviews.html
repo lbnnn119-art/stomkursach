@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMILE EXPERT — Отзывы</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </a>
+        <nav>
+            <a href="services.html">Услуги</a>
+            <a href="team.html">Наша команда</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="reviews.html" class="active">Отзывы</a>
+        </nav>
+        <button class="profile-btn" onclick="handleProfileClick()">
+            <img src="Profile.png" alt="Профиль">
+        </button>
+    </header>
+
+    <main>
+        <div class="reviews-container">
+
+            <div class="add-review-box">
+                <div class="review-header">
+                    <div class="avatar-circle"></div>
+                    <span class="author-name" id="currentUserName">Авторизуйтесь, чтобы оставить отзыв</span>
+                    <div class="rating-select" id="starRating">
+                        <span class="star active" data-value="1">★</span>
+                        <span class="star active" data-value="2">★</span>
+                        <span class="star active" data-value="3">★</span>
+                        <span class="star active" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </div>
+                <form onsubmit="submitReview(event)">
+                    <textarea class="review-textarea" id="reviewText" placeholder="Напишите что-нибудь..." required></textarea>
+                    <button type="submit" class="submit-review-btn">Оставить отзыв</button>
+                    <div style="clear: both;"></div>
+                </form>
+            </div>
+
+            <div id="reviewsList">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="avatar-circle"></div>
+                        <span class="author-name">Андрей Лебедев</span>
+                        <span class="stars">★★★★★</span>
+                    </div>
+                    <p class="review-text">Уже несколько лет данное учреждение является нашей семейной стоматологией. Специалисты центра очень квалифицированные, всегда стараются спасти ваш зуб, подсказывают как поступить лучше. Дают рекомендации по уходу и много другое. Центр очень современный, со всем необходимым оборудованием.</p>
+                </div>
+
+                <div class="review-card" style="margin-top: 25px;">
+                    <div class="review-header">
+                        <div class="avatar-circle"></div>
+                        <span class="author-name">Дарья Павлова</span>
+                        <span class="stars">★★★★★</span>
+                    </div>
+                    <p class="review-text">Обратилась в SMILE EXPERT по совету коллеги и ни разу не пожалела. В клинике очень чисто, современное оборудование, чувствуешь себя в надёжных руках. Врачи всё подробно объясняют, показывают снимки, предлагают несколько вариантов лечения, настаивают только на необходимом. Отдельное спасибо администраторам — всегда напомнят о визите, подберут удобное время. Теперь вся наша семья лечится только здесь.</p>
+                </div>
+
+                <div class="review-card" style="margin-top: 25px;">
+                    <div class="review-header">
+                        <div class="avatar-circle"></div>
+                        <span class="author-name">Никита Михайлов</span>
+                        <span class="stars">★★★★☆</span>
+                    </div>
+                    <p class="review-text">Хорошая стоматология, врачи грамотные, оборудование современное. Лечил зуб — всё сделали качественно, почти без боли, дали хорошие рекомендации по уходу. Но минус ползвезды за то, что пришлось ждать приёма 15 минут, хотя записывался заранее. И цены чуть выше среднего, но в целом результат того стоит. Четыре с половиной — твёрдая четвёрка, рекомендую.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="SMILE EXPERT">
+        </div>
+        <div class="footer-nav">
+            <a href="services.html">Услуги</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="team.html">Наша команда</a>
+            <a href="reviews.html">Отзывы</a>
+        </div>
+        <div class="footer-contacts">
+            <span>8 900-900-90-90</span>
+            <span>smileExpert@gmail.com</span>
+        </div>
+    </footer>
+
+<script>
+        let currentRating = 4;
+        const userName = localStorage.getItem('userName');
+        const token = localStorage.getItem('token');
+
+        if (userName) {
+            document.getElementById('currentUserName').innerText = userName;
+        }
+
+        function handleProfileClick() {
+            if (token) {
+                window.location.href = 'profile.html';
+            } else {
+                alert('Необходимо авторизоваться!');
+                window.location.href = 'index.html';
+            }
+        }
+
+        const stars = document.querySelectorAll('#starRating .star');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.getAttribute('data-value'));
+                stars.forEach((s, idx) => {
+                    if (idx < currentRating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        async function loadReviews() {
+            try {
+                const res = await fetch('http://localhost:3000/api/reviews');
+                const reviews = await res.json();
+                if (res.ok) {
+                    const reviewsList = document.getElementById('reviewsList');
+                    reviewsList.innerHTML = reviews.map(r => {
+                        const starsStr = '★'.repeat(r.Рейтинг) + '☆'.repeat(5 - r.Рейтинг);
+                        const author = `${r.Имя || ''} ${r.Фамилия || ''}`.trim() || 'Пользователь';
+                        return `
+                            <div class="review-card" style="margin-top: 25px;">
+                                <div class="review-header">
+                                    <div class="avatar-circle"></div>
+                                    <span class="author-name">${author}</span>
+                                    <span class="stars">${starsStr}</span>
+                                </div>
+                                <p class="review-text">${r.Текст}</p>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error('Ошибка загрузки отзывов', err);
+            }
+        }
+
+        loadReviews();
+
+        async function submitReview(e) {
+            e.preventDefault();
+            if (!token || !userName) {
+                alert('Оставлять отзывы могут только авторизованные пользователи!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const text = document.getElementById('reviewText').value;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        Рейтинг: currentRating,
+                        Текст: text
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert(data.message || 'Отзыв успешно добавлен!');
+                    document.getElementById('reviewText').value = '';
+                    loadReviews();
+                } else {
+                    alert(data.error || 'Ошибка при добавлении отзыва');
+                }
+            } catch (err) {
+                alert('Не удалось связаться с сервером');
+            }
+        }
+    </script>
+</body>
+</html>
