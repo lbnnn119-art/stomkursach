@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = 'super_secret_key_for_cursach';
+const JWT_SECRET = 'ppppppppppp123456';
 
 const db = mysql.createPool({
     host: 'localhost',
