@@ -328,6 +328,14 @@
 
         function saveProfile(e) {
             e.preventDefault();
+            const phone = document.getElementById('phoneInput').value.trim();
+            const phoneRegex = /^\+7\d{10}$/;
+            
+            if (phone && !phoneRegex.test(phone)) {
+                alert('Телефон должен начинаться с +7 и содержать ровно 11 цифр (например: +79001234567)');
+                return;
+            }
+
             alert('Изменения сохранены!');
         }
 
